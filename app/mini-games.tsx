@@ -7,6 +7,12 @@ import { GameCard } from '../components/GameCard';
 // Mock game data
 const MINI_GAMES: MiniGame[] = [
   {
+    id: 'attention-jump',
+    title: 'Attention Jump',
+    image: require('../assets/game-placeholder.png'),
+    description: 'Make the square jump with your attention!',
+  },
+  {
     id: '1',
     title: 'Focus Racer',
     image: require('../assets/game-placeholder.png'),
@@ -48,6 +54,13 @@ export default function MiniGamesScreen() {
   const router = useRouter();
 
   const handleGamePress = (game: MiniGame) => {
+    // Direct route for Attention Jump game
+    if (game.id === 'attention-jump') {
+      router.push('/attention-jump');
+      return;
+    }
+    
+    // Other games go to detail page
     router.push({
       pathname: '/game-detail',
       params: { gameId: game.id, gameTitle: game.title },

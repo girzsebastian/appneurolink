@@ -25,11 +25,16 @@ const EEGGraph: React.FC<EEGGraphProps> = ({
   }
 
   // Prepare data for medical-grade visualization
-  const samples = data.slice(-100); // Last 100 samples
+  const samples = data.slice(-80); // Last 80 samples for smoother display
+  
+  // Auto-scale based on actual data range for better visualization
+  const maxValue = Math.max(...samples.map(Math.abs), 1);
+  const scale = Math.min(maxValue, 5000); // Cap at 5000 for reasonable scaling
+  
   const points: [number, number][] = samples.map((value, index) => {
     const x = (index / Math.max(samples.length - 1, 1)) * width;
-    // Normalize EEG value (-2048 to +2048) to graph height
-    const normalizedValue = ((value + 2048) / 4096); // 0 to 1
+    // Normalize EEG value using dynamic scale
+    const normalizedValue = (value / scale) * 0.5 + 0.5; // Center at 0.5, range 0-1
     const y = height - (normalizedValue * height * 0.8) - (height * 0.1); // Use 80% of height, centered
     return [x, y];
   });

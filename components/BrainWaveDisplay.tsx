@@ -31,13 +31,12 @@ export const BrainWaveDisplay: React.FC<BrainWaveDisplayProps> = ({ data }) => {
               style={[
                 styles.bar,
                 {
-                  width: `${wave.value}%`,
+                  width: `${Math.max(5, wave.value)}%`, // Minimum 5% for visibility
                   backgroundColor: wave.color,
                 },
               ]}
             />
           </View>
-          <Text style={styles.value}>{wave.value.toFixed(1)}</Text>
         </View>
       ))}
     </View>
@@ -82,13 +81,7 @@ const styles = StyleSheet.create({
   bar: {
     height: '100%',
     borderRadius: 10,
-  },
-  value: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
-    width: 40,
-    textAlign: 'right',
+    transition: 'width 0.3s ease-out', // Smooth animation
   },
 });
 

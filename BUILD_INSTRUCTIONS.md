@@ -36,12 +36,25 @@ Output: `app-release.apk`
 
 ## 📊 View Logs
 
+### Quick View (Real-time)
 To see real-time BrainLink data and app logs:
 ```bash
 ./view-logs.sh
 ```
 
-Press `Ctrl+C` to stop viewing logs.
+### Capture & Save Logs (macOS)
+To capture logs to a file for detailed analysis:
+```bash
+./capture-logs-macos.sh
+```
+
+This will:
+- Clear old logs
+- Show live filtered logs
+- Save complete logs to `/tmp/brainlink-neurofeedback-TIMESTAMP.log`
+- Provide analysis commands after stopping
+
+Press `Ctrl+C` to stop viewing/capturing logs.
 
 ## 🧠 BrainLink Integration
 

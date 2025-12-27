@@ -41,6 +41,11 @@ export function useBrainLink() {
     };
   }, []);
 
+  // Debug: Log devices array changes
+  useEffect(() => {
+    console.log('🔄 Devices state changed:', devices.length, 'devices', devices.map(d => `${d.name}(${d.id})`));
+  }, [devices]);
+
   const requestAndroidPermissions = async () => {
     if (Platform.OS === 'android' && Platform.Version >= 31) {
       const granted = await PermissionsAndroid.requestMultiple([
@@ -60,8 +65,18 @@ export function useBrainLink() {
 
   const startScan = async () => {
     console.log('🔍 Starting scan...');
+    console.log('🔍 Current devices before scan:', devices.length);
+    
+    // First check permissions
+    try {
+      await requestAndroidPermissions();
+    } catch (error) {
+      console.error('❌ Permission error:', error);
+    }
+    
     setIsScanning(true);
     setDevices([]);
+    console.log('🔍 Devices cleared, array length:', 0);
 
     bleManager.startDeviceScan(null, null, (error, device) => {
       if (error) {
@@ -73,10 +88,14 @@ export function useBrainLink() {
       if (device && device.name && device.name.includes('BrainLink')) {
         console.log('✅ Found BrainLink:', device.name, device.id);
         setDevices((prev) => {
+          console.log('📱 Previous devices:', prev.length);
           const exists = prev.find((d) => d.id === device.id);
           if (!exists) {
-            return [...prev, device];
+            const updated = [...prev, device];
+            console.log('📱 Devices updated:', updated.length, 'devices', updated.map(d => d.name));
+            return updated;
           }
+          console.log('📱 Device already exists, not adding');
           return prev;
         });
       }
@@ -354,5 +373,6 @@ export function useBrainLink() {
     startScan,
     connectToDevice,
     disconnect,
+    requestPermissions: requestAndroidPermissions,
   };
 }

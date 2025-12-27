@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BrainWaveData, MentalState } from '../types';
-import { BottomBar } from '../components/BottomBar';
 import { BrainLinkConnection } from '../components/BrainLinkConnection';
-import { ConnectionStatusIndicator } from '../components/ConnectionStatusIndicator';
 import { useBrainLink } from '../hooks/useBrainLink';
 
 export default function NeurofeedbackScreen() {
@@ -19,40 +16,11 @@ export default function NeurofeedbackScreen() {
     attention,
     meditation,
     signal,
-    heartRate,
-    delta,
-    theta,
-    lowAlpha,
-    highAlpha,
-    lowBeta,
-    highBeta,
-    lowGamma,
-    midGamma,
-    rawEEG,
     startScan,
     connectToDevice,
     disconnect,
+    requestPermissions,
   } = useBrainLink();
-
-  // Map to old structure for compatibility
-  const brainWaveData: BrainWaveData = {
-    delta,
-    theta,
-    loAlpha: lowAlpha,
-    hiAlpha: highAlpha,
-    loBeta: lowBeta,
-    hiBeta: highBeta,
-    loGamma: lowGamma,
-    hiGamma: midGamma,
-  };
-
-  const mentalState: MentalState = {
-    attention,
-    relaxation: meditation, // Meditation = Relaxation
-  };
-
-  const rawEegData = rawEEG;
-  const isReceivingData = isConnected && (attention > 0 || meditation > 0);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userToken');
@@ -122,21 +90,6 @@ export default function NeurofeedbackScreen() {
           </View>
         </TouchableOpacity>
       </View>
-
-      <BottomBar 
-        brainWaveData={brainWaveData} 
-        mentalState={mentalState}
-        isConnected={isConnected}
-        isReceivingData={isReceivingData}
-        rawEegData={rawEegData}
-      />
-      
-      {/* Floating connection status indicator */}
-      <ConnectionStatusIndicator
-        isConnected={isConnected}
-        deviceName={devices.find(d => d.isConnected)?.name || 'BrainLink_Lite'}
-        onPress={() => setShowConnectionModal(true)}
-      />
       
       <BrainLinkConnection
         visible={showConnectionModal}
@@ -150,6 +103,10 @@ export default function NeurofeedbackScreen() {
           if (device) connectToDevice(device);
         }}
         onDisconnect={handleDisconnect}
+        onRequestPermissions={requestPermissions}
+        attention={attention}
+        meditation={meditation}
+        signal={signal}
       />
     </View>
   );
@@ -222,18 +179,19 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 40,
-    paddingHorizontal: 40,
-    paddingBottom: 100,
+    gap: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 200, // Extra space for global bottom bar
   },
   card: {
     backgroundColor: '#4CAF50',
     borderRadius: 24,
-    padding: 40,
-    width: 350,
-    height: 250,
+    padding: 32,
+    width: 280,
+    height: 200,
     justifyContent: 'space-between',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
