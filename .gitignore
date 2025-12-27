@@ -21,3 +21,11 @@ web-build/
 .env.local
 .env*.local
 
+
+# APK files (too large for GitHub)
+*.apk
+app-release.apk
+
+# Build outputs
+android/app/build/
+*.aab
