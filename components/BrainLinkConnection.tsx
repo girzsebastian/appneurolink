@@ -8,14 +8,12 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { BrainLinkDevice } from '../types';
-import { CustomButton } from './CustomButton';
 
 interface BrainLinkConnectionProps {
   visible: boolean;
   isScanning: boolean;
   isConnected: boolean;
-  devices: BrainLinkDevice[];
+  devices: any[];
   onClose: () => void;
   onScan: () => void;
   onConnect: (deviceId: string) => void;
@@ -57,46 +55,39 @@ export const BrainLinkConnection: React.FC<BrainLinkConnectionProps> = ({
               <Text style={styles.connectedSubtext}>
                 Receiving brain wave data in real-time
               </Text>
-              <CustomButton
-                title="Disconnect"
+              <TouchableOpacity
+                style={styles.disconnectButton}
                 onPress={onDisconnect}
-                variant="secondary"
-              />
+              >
+                <Text style={styles.disconnectButtonText}>Disconnect</Text>
+              </TouchableOpacity>
             </View>
           ) : (
             <>
-              <View style={styles.scanContainer}>
-                <CustomButton
-                  title={isScanning ? 'Scanning...' : 'Scan for Devices'}
-                  onPress={onScan}
-                  loading={isScanning}
-                  disabled={isScanning}
-                />
-              </View>
+              <TouchableOpacity
+                style={[styles.scanButton, isScanning && styles.scanButtonDisabled]}
+                onPress={onScan}
+                disabled={isScanning}
+              >
+                <Text style={styles.scanButtonText}>
+                  {isScanning ? 'Scanning...' : 'Scan for BrainLink'}
+                </Text>
+              </TouchableOpacity>
 
               {isScanning && (
                 <View style={styles.scanningInfo}>
-                  <ActivityIndicator size="small" color="#4CAF50" />
+                  <ActivityIndicator size="large" color="#00ff00" />
                   <Text style={styles.scanningText}>
                     Looking for BrainLink devices...
                   </Text>
                 </View>
               )}
 
-              <View style={styles.deviceList}>
-                <Text style={styles.deviceListTitle}>
-                  Available Devices ({devices.length})
-                </Text>
-                
-                {devices.length === 0 ? (
-                  <View style={styles.emptyState}>
-                    <Text style={styles.emptyStateText}>
-                      {isScanning
-                        ? 'Searching for devices...'
-                        : 'No devices found. Make sure your BrainLink headset is turned on and in range.'}
-                    </Text>
-                  </View>
-                ) : (
+              {devices.length > 0 && (
+                <View style={styles.deviceList}>
+                  <Text style={styles.deviceListTitle}>
+                    Found Devices:
+                  </Text>
                   <FlatList
                     data={devices}
                     keyExtractor={(item) => item.id}
@@ -105,19 +96,16 @@ export const BrainLinkConnection: React.FC<BrainLinkConnectionProps> = ({
                         style={styles.deviceItem}
                         onPress={() => onConnect(item.id)}
                       >
-                        <View style={styles.deviceInfo}>
-                          <Text style={styles.deviceName}>{item.name}</Text>
-                          <Text style={styles.deviceId}>{item.id}</Text>
-                        </View>
-                        <View style={styles.connectIcon}>
-                          <Text style={styles.connectIconText}>→</Text>
-                        </View>
+                        <Text style={styles.deviceName}>
+                          {item.name || 'Unknown Device'}
+                        </Text>
+                        <Text style={styles.deviceId}>{item.id}</Text>
                       </TouchableOpacity>
                     )}
                     style={styles.flatList}
                   />
-                )}
-              </View>
+                </View>
+              )}
             </>
           )}
 
@@ -135,16 +123,16 @@ export const BrainLinkConnection: React.FC<BrainLinkConnectionProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    backgroundColor: 'rgba(0, 0, 0, 0.95)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   container: {
-    width: '80%',
+    width: '90%',
     maxWidth: 600,
-    maxHeight: '80%',
-    backgroundColor: '#1e1e2e',
-    borderRadius: 24,
+    maxHeight: '85%',
+    backgroundColor: '#0a0a0a',
+    borderRadius: 16,
     padding: 24,
   },
   header: {
@@ -154,125 +142,129 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#fff',
   },
   closeButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#2a2a3e',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#1a1a1a',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#333',
   },
   closeButtonText: {
-    fontSize: 24,
-    color: '#888',
+    fontSize: 20,
+    color: '#fff',
   },
   connectedContainer: {
     alignItems: 'center',
-    paddingVertical: 40,
+    paddingVertical: 50,
   },
   statusIcon: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#4CAF50',
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#00ff00',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
   statusIconText: {
-    fontSize: 48,
-    color: '#fff',
+    fontSize: 60,
+    color: '#0a0a0a',
+    fontWeight: 'bold',
   },
   connectedText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 8,
-  },
-  connectedSubtext: {
-    fontSize: 16,
-    color: '#888',
-    marginBottom: 32,
-    textAlign: 'center',
-  },
-  scanContainer: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  scanningInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-    marginBottom: 24,
-  },
-  scanningText: {
-    color: '#888',
-    fontSize: 14,
-  },
-  deviceList: {
-    flex: 1,
-    marginBottom: 16,
-  },
-  deviceListTitle: {
-    fontSize: 16,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 12,
+  },
+  connectedSubtext: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 40,
+    textAlign: 'center',
+  },
+  disconnectButton: {
+    backgroundColor: '#ff4444',
+    paddingVertical: 16,
+    paddingHorizontal: 40,
+    borderRadius: 12,
+    minWidth: 200,
+    alignItems: 'center',
+  },
+  disconnectButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  scanButton: {
+    backgroundColor: '#1e90ff',
+    padding: 18,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  scanButtonDisabled: {
+    backgroundColor: '#555',
+  },
+  scanButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  scanningInfo: {
+    alignItems: 'center',
+    marginBottom: 30,
+    gap: 15,
+  },
+  scanningText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  deviceList: {
+    flex: 1,
+  },
+  deviceListTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 15,
   },
   flatList: {
     flex: 1,
   },
-  emptyState: {
-    padding: 32,
-    alignItems: 'center',
-  },
-  emptyStateText: {
-    color: '#888',
-    fontSize: 14,
-    textAlign: 'center',
-    lineHeight: 20,
-  },
   deviceItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#2a2a3e',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-  },
-  deviceInfo: {
-    flex: 1,
+    backgroundColor: '#1a1a1a',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: '#333',
   },
   deviceName: {
-    fontSize: 18,
-    fontWeight: '600',
     color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
     marginBottom: 4,
   },
   deviceId: {
-    fontSize: 12,
     color: '#666',
-  },
-  connectIcon: {
-    marginLeft: 12,
-  },
-  connectIconText: {
-    fontSize: 24,
-    color: '#4CAF50',
+    fontSize: 12,
   },
   footer: {
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#2a2a3e',
+    borderTopColor: '#222',
+    marginTop: 16,
   },
   footerText: {
-    color: '#888',
+    color: '#666',
     fontSize: 12,
     textAlign: 'center',
   },

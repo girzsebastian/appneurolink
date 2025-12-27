@@ -17,8 +17,9 @@ import Checkbox from 'expo-checkbox';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // Pre-fill with dummy credentials for easy testing
+  const [email, setEmail] = useState('demo@brainlink.com');
+  const [password, setPassword] = useState('demo123');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
@@ -111,6 +112,14 @@ export default function LoginScreen() {
               loading={loading}
             />
 
+            <View style={styles.demoInfo}>
+              <Text style={styles.demoInfoText}>
+                💡 Demo Credentials:{'\n'}
+                Email: demo@brainlink.com{'\n'}
+                Password: demo123
+              </Text>
+            </View>
+
             <TouchableOpacity style={styles.forgotPassword}>
               <Text style={styles.forgotPasswordText}>Forgot your password?</Text>
             </TouchableOpacity>
@@ -175,6 +184,21 @@ const styles = StyleSheet.create({
   forgotPasswordText: {
     color: '#4CAF50',
     fontSize: 16,
+  },
+  demoInfo: {
+    marginTop: 20,
+    padding: 16,
+    backgroundColor: '#2a2a3e',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#4CAF50',
+    width: '100%',
+  },
+  demoInfoText: {
+    color: '#4CAF50',
+    fontSize: 14,
+    textAlign: 'center',
+    lineHeight: 20,
   },
   backButton: {
     marginTop: 24,

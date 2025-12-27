@@ -47,7 +47,6 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
       </Svg>
       <View style={styles.textContainer}>
         <Text style={styles.value}>{Math.round(value)}</Text>
-        <Text style={styles.label}>{label}</Text>
       </View>
     </View>
   );

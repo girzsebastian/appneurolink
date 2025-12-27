@@ -2,9 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function WelcomeScreen() {
   const router = useRouter();
+
+  const handleQuickDemo = async () => {
+    // Auto-login with dummy credentials
+    await AsyncStorage.setItem('userToken', 'dummy-token-123');
+    router.replace('/neurofeedback');
+  };
 
   return (
     <LinearGradient colors={['#1a1a2e', '#16213e', '#0f3460']} style={styles.container}>
@@ -34,6 +41,13 @@ export default function WelcomeScreen() {
             <Text style={styles.cardSubtitle}>Start your training</Text>
           </TouchableOpacity>
         </View>
+
+        <TouchableOpacity
+          style={styles.quickDemoButton}
+          onPress={handleQuickDemo}
+        >
+          <Text style={styles.quickDemoText}>🚀 Quick Demo (Skip Login)</Text>
+        </TouchableOpacity>
       </View>
     </LinearGradient>
   );
@@ -109,6 +123,20 @@ const styles = StyleSheet.create({
   cardSubtitle: {
     fontSize: 16,
     color: '#ccc',
+  },
+  quickDemoButton: {
+    marginTop: 32,
+    paddingVertical: 16,
+    paddingHorizontal: 32,
+    backgroundColor: '#4ECDC4',
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#4CAF50',
+  },
+  quickDemoText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
   },
 });
 

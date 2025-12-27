@@ -1,109 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Image } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import { useRouter, useSegments } from 'expo-router';
 import * as Updates from 'expo-updates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function LoadingScreen() {
+export default function Index() {
   const router = useRouter();
-  const [updateMessage, setUpdateMessage] = useState('Loading...');
+  const segments = useSegments();
 
   useEffect(() => {
-    checkForUpdates();
+    // Wait for router to be ready before navigating
+    const timer = setTimeout(() => {
+      // Redirect to welcome page
+      router.replace('/welcome');
+
+      // Check for updates and login status in the background
+      initializeApp();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  const checkForUpdates = async () => {
+  const initializeApp = async () => {
     try {
-      // Check for app updates
+      // Check for app updates (only in production)
       if (!__DEV__) {
-        setUpdateMessage('Checking for updates...');
+        try {
         const update = await Updates.checkForUpdateAsync();
-        
         if (update.isAvailable) {
-          setUpdateMessage('Downloading update...');
           await Updates.fetchUpdateAsync();
-          setUpdateMessage('Update downloaded! Restarting...');
           await Updates.reloadAsync();
+            return;
+          }
+        } catch (error) {
+          console.error('Update check failed:', error);
         }
       }
 
-      // Check if user is logged in
-      setUpdateMessage('Loading app...');
+      // Check if user is logged in and redirect to dashboard if needed
       const userToken = await AsyncStorage.getItem('userToken');
-      
+      if (userToken) {
+        // Small delay to ensure welcome page is shown first, then redirect
       setTimeout(() => {
-        if (userToken) {
           router.replace('/neurofeedback');
-        } else {
-          router.replace('/welcome');
+        }, 500);
         }
-      }, 1500);
     } catch (error) {
-      console.error('Error checking updates:', error);
-      // Continue to app even if update check fails
-      const userToken = await AsyncStorage.getItem('userToken');
-      router.replace(userToken ? '/neurofeedback' : '/welcome');
-    }
+      console.error('Error initializing app:', error);
+}
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <View style={styles.logoPlaceholder}>
-          <Text style={styles.logoText}>BrainLink</Text>
-        </View>
-        <Text style={styles.subtitle}>Neurofeedback Training</Text>
-      </View>
-      <ActivityIndicator size="large" color="#4CAF50" style={styles.loader} />
-      <Text style={styles.message}>{updateMessage}</Text>
-      <Text style={styles.version}>v1.0.0</Text>
-    </View>
-  );
+  return null;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1a1a2e',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginBottom: 60,
-  },
-  logoPlaceholder: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    backgroundColor: '#4CAF50',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  logoText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  subtitle: {
-    fontSize: 20,
-    color: '#888',
-    fontWeight: '600',
-  },
-  loader: {
-    marginVertical: 20,
-  },
-  message: {
-    color: '#fff',
-    fontSize: 16,
-    marginTop: 16,
-  },
-  version: {
-    position: 'absolute',
-    bottom: 40,
-    color: '#666',
-    fontSize: 14,
-  },
-});
 

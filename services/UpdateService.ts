@@ -22,7 +22,7 @@ class UpdateService {
         return {
           isAvailable: true,
           currentVersion: this.getCurrentVersion(),
-          availableVersion: update.manifest?.version || 'unknown',
+          availableVersion: 'unknown', // Version not available in manifest
           manifest: update.manifest,
         };
       }
@@ -86,7 +86,7 @@ class UpdateService {
    * Get current update ID
    */
   getCurrentUpdateId(): string | undefined {
-    return Updates.updateId;
+    return Updates.updateId || undefined;
   }
 
   /**
@@ -100,7 +100,7 @@ class UpdateService {
    * Get update channel
    */
   getUpdateChannel(): string | undefined {
-    return Updates.channel;
+    return Updates.channel || undefined;
   }
 
   /**

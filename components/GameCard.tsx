@@ -20,10 +20,9 @@ export const GameCard: React.FC<GameCardProps> = ({ game, onPress }) => {
 
 const styles = StyleSheet.create({
   card: {
-    width: 280,
-    height: 200,
+    width: '45%',
+    aspectRatio: 1.4,
     borderRadius: 16,
-    marginHorizontal: 12,
     overflow: 'hidden',
     backgroundColor: '#2a2a3e',
     shadowColor: '#000',
@@ -31,6 +30,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 5,
+    marginBottom: 20,
   },
   image: {
     width: '100%',

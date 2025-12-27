@@ -5,69 +5,54 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BrainWaveData, MentalState } from '../types';
 import { BottomBar } from '../components/BottomBar';
 import { BrainLinkConnection } from '../components/BrainLinkConnection';
+import { ConnectionStatusIndicator } from '../components/ConnectionStatusIndicator';
 import { useBrainLink } from '../hooks/useBrainLink';
 
 export default function NeurofeedbackScreen() {
   const router = useRouter();
   const [showConnectionModal, setShowConnectionModal] = useState(false);
-  const [useMockData, setUseMockData] = useState(true);
   
   const {
     isConnected,
     isScanning,
     devices,
-    brainWaveData: realBrainWaveData,
-    mentalState: realMentalState,
-    startScanning,
-    stopScanning,
-    connect,
+    attention,
+    meditation,
+    signal,
+    heartRate,
+    delta,
+    theta,
+    lowAlpha,
+    highAlpha,
+    lowBeta,
+    highBeta,
+    lowGamma,
+    midGamma,
+    rawEEG,
+    startScan,
+    connectToDevice,
     disconnect,
   } = useBrainLink();
 
-  const [mockBrainWaveData, setMockBrainWaveData] = useState<BrainWaveData>({
-    delta: 45,
-    theta: 55,
-    loAlpha: 60,
-    hiAlpha: 65,
-    loBeta: 50,
-    hiBeta: 70,
-    loGamma: 40,
-    hiGamma: 35,
-  });
+  // Map to old structure for compatibility
+  const brainWaveData: BrainWaveData = {
+    delta,
+    theta,
+    loAlpha: lowAlpha,
+    hiAlpha: highAlpha,
+    loBeta: lowBeta,
+    hiBeta: highBeta,
+    loGamma: lowGamma,
+    hiGamma: midGamma,
+  };
 
-  const [mockMentalState, setMockMentalState] = useState<MentalState>({
-    attention: 72,
-    relaxation: 65,
-  });
+  const mentalState: MentalState = {
+    attention,
+    relaxation: meditation, // Meditation = Relaxation
+  };
 
-  // Use real or mock data based on connection status
-  const brainWaveData = isConnected ? realBrainWaveData : mockBrainWaveData;
-  const mentalState = isConnected ? realMentalState : mockMentalState;
-
-  // Simulate real-time data updates when not connected
-  useEffect(() => {
-    if (!isConnected && useMockData) {
-      const interval = setInterval(() => {
-        setMockBrainWaveData({
-          delta: Math.random() * 100,
-          theta: Math.random() * 100,
-          loAlpha: Math.random() * 100,
-          hiAlpha: Math.random() * 100,
-          loBeta: Math.random() * 100,
-          hiBeta: Math.random() * 100,
-          loGamma: Math.random() * 100,
-          hiGamma: Math.random() * 100,
-        });
-
-        setMockMentalState({
-          attention: Math.random() * 100,
-          relaxation: Math.random() * 100,
-        });
-      }, 2000);
-
-      return () => clearInterval(interval);
-    }
-  }, [isConnected, useMockData]);
+  const rawEegData = rawEEG;
+  const isReceivingData = isConnected && (attention > 0 || meditation > 0);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userToken');
@@ -138,7 +123,20 @@ export default function NeurofeedbackScreen() {
         </TouchableOpacity>
       </View>
 
-      <BottomBar brainWaveData={brainWaveData} mentalState={mentalState} />
+      <BottomBar 
+        brainWaveData={brainWaveData} 
+        mentalState={mentalState}
+        isConnected={isConnected}
+        isReceivingData={isReceivingData}
+        rawEegData={rawEegData}
+      />
+      
+      {/* Floating connection status indicator */}
+      <ConnectionStatusIndicator
+        isConnected={isConnected}
+        deviceName={devices.find(d => d.isConnected)?.name || 'BrainLink_Lite'}
+        onPress={() => setShowConnectionModal(true)}
+      />
       
       <BrainLinkConnection
         visible={showConnectionModal}
@@ -146,8 +144,11 @@ export default function NeurofeedbackScreen() {
         isConnected={isConnected}
         devices={devices}
         onClose={() => setShowConnectionModal(false)}
-        onScan={startScanning}
-        onConnect={connect}
+        onScan={startScan}
+        onConnect={(deviceId) => {
+          const device = devices.find(d => d.id === deviceId);
+          if (device) connectToDevice(device);
+        }}
         onDisconnect={handleDisconnect}
       />
     </View>

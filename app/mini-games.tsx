@@ -68,11 +68,11 @@ export default function MiniGamesScreen() {
       </View>
 
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
         style={styles.scrollView}
       >
+        <View style={styles.gamesGrid}>
         {MINI_GAMES.map((game) => (
           <GameCard
             key={game.id}
@@ -80,6 +80,7 @@ export default function MiniGamesScreen() {
             onPress={() => handleGamePress(game)}
           />
         ))}
+        </View>
       </ScrollView>
     </View>
   );
@@ -119,9 +120,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingHorizontal: 40,
-    paddingVertical: 60,
-    alignItems: 'center',
+    padding: 20,
+  },
+  gamesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    gap: 20,
   },
 });
 

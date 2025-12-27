@@ -1,6 +1,2 @@
-const { getDefaultConfig } = require('expo/metro-config');
-
-const config = getDefaultConfig(__dirname);
-
-module.exports = config;
-
+require('tsx/cjs');
+module.exports = require('./metro.config.ts');
