@@ -140,7 +140,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#ffffff',
   },
   scrollContent: {
     flexGrow: 1,
@@ -154,12 +154,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 42,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#0891b2',
     marginBottom: 12,
   },
   subtitle: {
     fontSize: 18,
-    color: '#888',
+    color: '#64748b',
     marginBottom: 40,
   },
   form: {
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   checkboxLabel: {
-    color: '#fff',
+    color: '#1e293b',
     marginLeft: 12,
     fontSize: 16,
   },
@@ -182,20 +182,20 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   forgotPasswordText: {
-    color: '#4CAF50',
+    color: '#06b6d4',
     fontSize: 16,
   },
   demoInfo: {
     marginTop: 20,
     padding: 16,
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#f1f5f9',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#4CAF50',
+    borderColor: '#06b6d4',
     width: '100%',
   },
   demoInfoText: {
-    color: '#4CAF50',
+    color: '#0891b2',
     fontSize: 14,
     textAlign: 'center',
     lineHeight: 20,
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   backButtonText: {
-    color: '#888',
+    color: '#64748b',
     fontSize: 16,
   },
 });

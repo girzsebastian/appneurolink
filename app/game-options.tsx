@@ -57,7 +57,7 @@ export default function GameOptionsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#ffffff',
   },
   header: {
     flexDirection: 'row',
@@ -68,18 +68,18 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 12,
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#f1f5f9',
     borderRadius: 8,
   },
   backButtonText: {
-    color: '#fff',
+    color: '#0891b2',
     fontSize: 16,
     fontWeight: '600',
   },
   title: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#0891b2',
   },
   placeholder: {
     width: 80,
@@ -106,11 +106,11 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   miniGamesCard: {
-    backgroundColor: '#FF6B6B',
+    backgroundColor: '#06b6d4',
   },
   videoCard: {
-    backgroundColor: '#9B59B6',
-    opacity: 0.6,
+    backgroundColor: '#0891b2',
+    opacity: 0.7,
   },
   cardIcon: {
     marginBottom: 24,

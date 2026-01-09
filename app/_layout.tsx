@@ -1,19 +1,17 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { GlobalBottomBar } from '../components/GlobalBottomBar';
 
 export default function RootLayout() {
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: '#1a1a2e' },
+          contentStyle: { backgroundColor: '#ffffff' },
           animation: 'fade',
         }}
       />
-      <GlobalBottomBar />
     </>
   );
 }

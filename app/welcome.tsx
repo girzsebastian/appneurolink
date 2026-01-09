@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,13 +14,15 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <LinearGradient colors={['#1a1a2e', '#16213e', '#0f3460']} style={styles.container}>
+    <View style={styles.container}>
+      <LinearGradient colors={['#06b6d4', '#0891b2']} style={styles.gradientBackground} />
       <View style={styles.content}>
         <View style={styles.logoContainer}>
-          <View style={styles.logoPlaceholder}>
-            <Text style={styles.logoText}>BrainLink</Text>
-          </View>
-          <Text style={styles.title}>Welcome to Neurofeedback</Text>
+          <Image 
+            source={require('../assets/logo-neuros-gradient-on-white.png')} 
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <Text style={styles.subtitle}>Train your mind, enhance your focus</Text>
         </View>
 
@@ -37,8 +39,8 @@ export default function WelcomeScreen() {
             style={[styles.card, styles.signUpCard]}
             onPress={() => router.push('/signup')}
           >
-            <Text style={styles.cardTitle}>Sign Up</Text>
-            <Text style={styles.cardSubtitle}>Start your training</Text>
+            <Text style={styles.signUpCardTitle}>Sign Up</Text>
+            <Text style={styles.signUpCardSubtitle}>Start your training</Text>
           </TouchableOpacity>
         </View>
 
@@ -49,13 +51,22 @@ export default function WelcomeScreen() {
           <Text style={styles.quickDemoText}>🚀 Quick Demo (Skip Login)</Text>
         </TouchableOpacity>
       </View>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  gradientBackground: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.1,
   },
   content: {
     flex: 1,
@@ -67,36 +78,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 80,
   },
-  logoPlaceholder: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    backgroundColor: '#4CAF50',
-    justifyContent: 'center',
-    alignItems: 'center',
+  logo: {
+    width: 350,
+    height: 350,
     marginBottom: 24,
-  },
-  logoText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
   },
   title: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#0891b2',
     marginBottom: 12,
   },
   subtitle: {
     fontSize: 18,
-    color: '#888',
+    color: '#64748b',
   },
   cardContainer: {
     flexDirection: 'row',
     gap: 32,
   },
   card: {
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#ffffff',
     borderRadius: 20,
     padding: 40,
     width: 280,
@@ -105,38 +107,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.1,
     shadowRadius: 12,
     elevation: 8,
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: '#e2e8f0',
   },
   signUpCard: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#06b6d4',
+    borderColor: '#0891b2',
   },
   cardTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#0891b2',
     marginBottom: 8,
   },
   cardSubtitle: {
     fontSize: 16,
-    color: '#ccc',
+    color: '#64748b',
+  },
+  signUpCardTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#ffffff',
+    marginBottom: 8,
+  },
+  signUpCardSubtitle: {
+    fontSize: 16,
+    color: 'rgba(255, 255, 255, 0.9)',
   },
   quickDemoButton: {
     marginTop: 32,
     paddingVertical: 16,
     paddingHorizontal: 32,
-    backgroundColor: '#4ECDC4',
+    backgroundColor: '#06b6d4',
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#4CAF50',
+    borderColor: '#0891b2',
   },
   quickDemoText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#fff',
+    color: '#ffffff',
   },
 });
 

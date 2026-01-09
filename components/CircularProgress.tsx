@@ -8,6 +8,7 @@ interface CircularProgressProps {
   strokeWidth?: number;
   color?: string;
   label: string;
+  textColor?: string;
 }
 
 export const CircularProgress: React.FC<CircularProgressProps> = ({
@@ -16,6 +17,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
   strokeWidth = 12,
   color = '#4CAF50',
   label,
+  textColor = '#1e293b',
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -25,7 +27,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
     <View style={styles.container}>
       <Svg width={size} height={size} style={styles.svg}>
         <Circle
-          stroke="#2a2a3e"
+          stroke="#e2e8f0"
           fill="none"
           cx={size / 2}
           cy={size / 2}
@@ -46,7 +48,7 @@ export const CircularProgress: React.FC<CircularProgressProps> = ({
         />
       </Svg>
       <View style={styles.textContainer}>
-        <Text style={styles.value}>{Math.round(value)}</Text>
+        <Text style={[styles.value, { color: textColor }]}>{Math.round(value)}</Text>
       </View>
     </View>
   );
@@ -69,11 +71,11 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#1e293b',
   },
   label: {
     fontSize: 14,
-    color: '#888',
+    color: '#1e293b',
     marginTop: 4,
   },
 });

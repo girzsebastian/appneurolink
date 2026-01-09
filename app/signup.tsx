@@ -207,7 +207,7 @@ export default function SignUpScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#ffffff',
   },
   scrollContent: {
     flexGrow: 1,
@@ -222,12 +222,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 42,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#0891b2',
     marginBottom: 12,
   },
   subtitle: {
     fontSize: 18,
-    color: '#888',
+    color: '#64748b',
     marginBottom: 40,
   },
   form: {
@@ -244,26 +244,26 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   label: {
-    color: '#fff',
+    color: '#1e293b',
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 8,
   },
   pickerContainer: {
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#f1f5f9',
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: '#e2e8f0',
   },
   picker: {
-    color: '#fff',
+    color: '#1e293b',
     height: 54,
   },
   backButton: {
     marginTop: 24,
   },
   backButtonText: {
-    color: '#888',
+    color: '#64748b',
     fontSize: 16,
   },
 });

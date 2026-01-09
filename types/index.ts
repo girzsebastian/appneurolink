@@ -48,8 +48,12 @@ export interface MiniGame {
 }
 
 export interface GameSettings {
-  threshold: number; // 30-100
-  isDynamic: boolean;
+  score: number;
+  scoreStreak: number;
+  time: number; // in seconds, base 2.5 mins = 150 seconds
+  baseAttention: number; // 0-100
+  isDynamic: boolean; // adjusts base attention algorithmically
+  threshold?: number; // 30-100 (optional, for backward compatibility)
 }
 
 // Navigation Types

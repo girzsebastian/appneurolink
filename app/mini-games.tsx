@@ -7,12 +7,6 @@ import { GameCard } from '../components/GameCard';
 // Mock game data
 const MINI_GAMES: MiniGame[] = [
   {
-    id: 'attention-jump',
-    title: 'Attention Jump',
-    image: require('../assets/game-placeholder.png'),
-    description: 'Make the square jump with your attention!',
-  },
-  {
     id: '1',
     title: 'Focus Racer',
     image: require('../assets/game-placeholder.png'),
@@ -54,13 +48,6 @@ export default function MiniGamesScreen() {
   const router = useRouter();
 
   const handleGamePress = (game: MiniGame) => {
-    // Direct route for Attention Jump game
-    if (game.id === 'attention-jump') {
-      router.push('/attention-jump');
-      return;
-    }
-    
-    // Other games go to detail page
     router.push({
       pathname: '/game-detail',
       params: { gameId: game.id, gameTitle: game.title },
@@ -102,7 +89,7 @@ export default function MiniGamesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#ffffff',
   },
   header: {
     flexDirection: 'row',
@@ -113,18 +100,18 @@ const styles = StyleSheet.create({
   },
   backButton: {
     padding: 12,
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#f1f5f9',
     borderRadius: 8,
   },
   backButtonText: {
-    color: '#fff',
+    color: '#0891b2',
     fontSize: 16,
     fontWeight: '600',
   },
   title: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#0891b2',
   },
   placeholder: {
     width: 80,

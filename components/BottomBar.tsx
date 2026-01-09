@@ -273,14 +273,16 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: BAR_HEIGHT,
-    backgroundColor: '#16161e',
+    backgroundColor: '#ffffff',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
-    shadowColor: '#000',
+    shadowColor: '#0891b2',
     shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#e2e8f0',
   },
   handle: {
     alignItems: 'center',
@@ -290,12 +292,12 @@ const styles = StyleSheet.create({
   handleBar: {
     width: 60,
     height: 5,
-    backgroundColor: '#3a3a4e',
+    backgroundColor: '#cbd5e1',
     borderRadius: 3,
     marginBottom: 8,
   },
   handleText: {
-    color: '#888',
+    color: '#64748b',
     fontSize: 14,
     fontWeight: '600',
   },
@@ -309,25 +311,31 @@ const styles = StyleSheet.create({
   },
   column1: {
     flex: 3.5, // Increased from 2 to 3.5 for larger Brain Waves/Raw EEG column
-    backgroundColor: '#1e1e2e',
+    backgroundColor: '#f8fafc',
     borderRadius: 12,
     padding: 12,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
   },
   column2: {
     flex: 1,
-    backgroundColor: '#1e1e2e',
+    backgroundColor: '#f8fafc',
     borderRadius: 12,
     padding: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
   },
   column3: {
     flex: 1,
-    backgroundColor: '#1e1e2e',
+    backgroundColor: '#f8fafc',
     borderRadius: 12,
     padding: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
   },
   toggleHeader: {
     flexDirection: 'row',
@@ -338,24 +346,24 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 6,
     paddingHorizontal: 10,
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#e2e8f0',
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
   },
   toggleButtonActive: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#06b6d4',
   },
   toggleText: {
-    color: '#888',
+    color: '#64748b',
     fontSize: 12,
     fontWeight: '600',
   },
   toggleTextActive: {
-    color: '#fff',
+    color: '#ffffff',
   },
   columnTitle: {
-    color: '#fff',
+    color: '#0891b2',
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 8,
@@ -376,7 +384,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   waveLabel: {
-    color: '#fff',
+    color: '#1e293b',
     fontSize: 9,
     fontWeight: '600',
     marginBottom: 4,
@@ -385,7 +393,7 @@ const styles = StyleSheet.create({
   verticalBarContainer: {
     width: '80%',
     height: 100, // Reduced from 150 to 100
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#e2e8f0',
     borderRadius: 4,
     justifyContent: 'flex-end',
     overflow: 'hidden',
@@ -398,7 +406,7 @@ const styles = StyleSheet.create({
     transition: 'height 0.3s ease',
   },
   waveValue: {
-    color: '#888',
+    color: '#64748b',
     fontSize: 9,
     fontWeight: '500',
     textAlign: 'center',
@@ -428,10 +436,12 @@ const styles = StyleSheet.create({
   },
   rawEEGContainer: {
     padding: 10,
-    backgroundColor: '#16161e',
+    backgroundColor: '#f8fafc',
     borderRadius: 8,
     height: 140, // Reduced from 200 to 140 to match brain waves height
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
   },
   rawEEGHeader: {
     flexDirection: 'row',
@@ -440,20 +450,20 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   rawEEGTitle: {
-    color: '#fff',
+    color: '#1e293b',
     fontSize: 12,
     fontWeight: '600',
   },
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#06b6d4',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
   },
   statusBadgeInactive: {
-    backgroundColor: '#3a3a4e',
+    backgroundColor: '#cbd5e1',
   },
   statusDotActive: {
     width: 6,
@@ -475,7 +485,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   statusTextInactive: {
-    color: '#888',
+    color: '#64748b',
     fontSize: 10,
     fontWeight: '600',
   },
@@ -486,9 +496,11 @@ const styles = StyleSheet.create({
     height: 60, // Reduced from 80 to 60
     marginVertical: 6,
     paddingVertical: 6,
-    backgroundColor: '#0f0f1e',
+    backgroundColor: '#ffffff',
     borderRadius: 6,
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
   },
   eegBar: {
     width: 2,
@@ -499,12 +511,14 @@ const styles = StyleSheet.create({
     height: 60, // Reduced from 80 to 60
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0f0f1e',
+    backgroundColor: '#f8fafc',
     borderRadius: 6,
     marginVertical: 6,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
   },
   placeholderText: {
-    color: '#666',
+    color: '#94a3b8',
     fontSize: 11,
     textAlign: 'center',
   },

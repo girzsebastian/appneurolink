@@ -29,7 +29,7 @@ export const CustomButton: React.FC<CustomButtonProps> = ({
       disabled={disabled || loading}
     >
       {loading ? (
-        <ActivityIndicator color={isPrimary ? '#fff' : '#4CAF50'} />
+        <ActivityIndicator color={isPrimary ? '#fff' : '#06b6d4'} />
       ) : (
         <Text style={[styles.text, isPrimary ? styles.primaryText : styles.secondaryText]}>
           {title}
@@ -49,12 +49,12 @@ const styles = StyleSheet.create({
     minWidth: 200,
   },
   primaryButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#06b6d4',
   },
   secondaryButton: {
     backgroundColor: 'transparent',
     borderWidth: 2,
-    borderColor: '#4CAF50',
+    borderColor: '#06b6d4',
   },
   disabledButton: {
     opacity: 0.5,
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   secondaryText: {
-    color: '#4CAF50',
+    color: '#06b6d4',
   },
 });
 

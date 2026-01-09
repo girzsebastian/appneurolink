@@ -1,5 +1,4 @@
 // Export all components from a single entry point
-export { AttentionJumpGame } from './AttentionJumpGame';
 export { BottomBar } from './BottomBar';
 export { BrainWaveDisplay } from './BrainWaveDisplay';
 export { BrainLinkConnection } from './BrainLinkConnection';
@@ -10,5 +9,4 @@ export { CustomButton } from './CustomButton';
 export { CustomInput } from './CustomInput';
 export { EEGGraph } from './EEGGraph';
 export { GameCard } from './GameCard';
-export { GlobalBottomBar } from './GlobalBottomBar';
 

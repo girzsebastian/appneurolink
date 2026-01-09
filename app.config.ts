@@ -1,16 +1,16 @@
 import { ExpoConfig } from 'expo/config';
 
 const config: ExpoConfig = {
-  name: process.env.APP_NAME || 'BrainLink Neurofeedback',
+  name: process.env.APP_NAME || 'Neuros Link',
   slug: 'brainlink',
   version: process.env.APP_VERSION || '1.0.0',
   orientation: 'landscape',
-  icon: './assets/icon.png',
+  icon: './assets/logo-app-neuros-link.png',
   userInterfaceStyle: 'light',
   splash: {
     image: './assets/splash.png',
     resizeMode: 'contain',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#ffffff',
   },
   assetBundlePatterns: ['**/*'],
   ios: {
@@ -26,8 +26,8 @@ const config: ExpoConfig = {
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/adaptive-icon.png',
-      backgroundColor: '#1a1a2e',
+      foregroundImage: './assets/logo-app-neuros-link.png',
+      backgroundColor: '#ffffff',
     },
     package: 'com.brainlink.neurofeedback',
     permissions: [

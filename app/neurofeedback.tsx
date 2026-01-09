@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BrainWaveData, MentalState } from '../types';
+import { BottomBar } from '../components/BottomBar';
 import { BrainLinkConnection } from '../components/BrainLinkConnection';
 import { useBrainLink } from '../hooks/useBrainLink';
+import { CircularProgress } from '../components/CircularProgress';
 
 export default function NeurofeedbackScreen() {
   const router = useRouter();
@@ -16,11 +19,52 @@ export default function NeurofeedbackScreen() {
     attention,
     meditation,
     signal,
+    heartRate,
+    delta,
+    theta,
+    lowAlpha,
+    highAlpha,
+    lowBeta,
+    highBeta,
+    lowGamma,
+    midGamma,
+    rawEEG,
     startScan,
     connectToDevice,
     disconnect,
     requestPermissions,
   } = useBrainLink();
+
+  // Normalize brain wave data (values are typically 10,000 - 1,000,000)
+  // Convert to 0-100 scale for better visualization
+  const normalizeBrainWave = (value: number): number => {
+    if (value === 0) return 0;
+    // Use logarithmic scale for better distribution
+    // Typical range: 10^3 to 10^6, map to 0-100
+    const logValue = Math.log10(Math.max(value, 1));
+    const normalized = ((logValue - 3) / 3) * 100; // 3 to 6 -> 0 to 100
+    return Math.max(0, Math.min(100, normalized));
+  };
+
+  // Map to old structure for compatibility with normalized values
+  const brainWaveData: BrainWaveData = {
+    delta: normalizeBrainWave(delta),
+    theta: normalizeBrainWave(theta),
+    loAlpha: normalizeBrainWave(lowAlpha),
+    hiAlpha: normalizeBrainWave(highAlpha),
+    loBeta: normalizeBrainWave(lowBeta),
+    hiBeta: normalizeBrainWave(highBeta),
+    loGamma: normalizeBrainWave(lowGamma),
+    hiGamma: normalizeBrainWave(midGamma),
+  };
+
+  const mentalState: MentalState = {
+    attention,
+    relaxation: meditation, // Meditation = Relaxation
+  };
+
+  const rawEegData = rawEEG;
+  const isReceivingData = isConnected && (attention > 0 || meditation > 0);
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userToken');
@@ -36,7 +80,11 @@ export default function NeurofeedbackScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Text style={styles.title}>NEUROFEEDBACK</Text>
+          <Image 
+            source={require('../assets/logo-neuros-gradient-on-white.png')} 
+            style={styles.logo}
+            resizeMode="contain"
+          />
           {isConnected && (
             <View style={styles.connectedBadge}>
               <Text style={styles.connectedBadgeText}>● Connected</Text>
@@ -69,6 +117,16 @@ export default function NeurofeedbackScreen() {
           <View style={styles.cardContent}>
             <Text style={styles.cardTitle}>ATTENTION</Text>
             <Text style={styles.cardSubtitle}>Focus Training Games</Text>
+            <View style={styles.attentionCircleContainer}>
+              <CircularProgress
+                value={attention}
+                label="Attention"
+                color="#ffffff"
+                size={120}
+                strokeWidth={12}
+                textColor="#ffffff"
+              />
+            </View>
           </View>
           <View style={styles.cardIcon}>
             <Text style={styles.iconText}>🎯</Text>
@@ -90,6 +148,14 @@ export default function NeurofeedbackScreen() {
           </View>
         </TouchableOpacity>
       </View>
+
+      <BottomBar 
+        brainWaveData={brainWaveData} 
+        mentalState={mentalState}
+        isConnected={isConnected}
+        isReceivingData={isReceivingData}
+        rawEegData={rawEegData}
+      />
       
       <BrainLinkConnection
         visible={showConnectionModal}
@@ -115,7 +181,7 @@ export default function NeurofeedbackScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#ffffff',
   },
   header: {
     flexDirection: 'row',
@@ -134,14 +200,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    color: '#fff',
-    letterSpacing: 2,
+  logo: {
+    width: 280,
+    height: 77,
   },
   connectedBadge: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#06b6d4',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
@@ -154,13 +218,13 @@ const styles = StyleSheet.create({
   iconButton: {
     width: 44,
     height: 44,
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#e2e8f0',
     borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
   },
   iconButtonConnected: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#06b6d4',
   },
   iconButtonText: {
     fontSize: 20,
@@ -168,60 +232,63 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     padding: 12,
-    backgroundColor: '#2a2a3e',
+    backgroundColor: '#f1f5f9',
     borderRadius: 8,
   },
   logoutText: {
-    color: '#ff6b6b',
+    color: '#ef4444',
     fontSize: 16,
     fontWeight: '600',
   },
   content: {
     flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 20,
-    paddingHorizontal: 20,
-    paddingBottom: 200, // Extra space for global bottom bar
+    gap: 60,
+    paddingHorizontal: 40,
+    paddingBottom: 100,
   },
   card: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 24,
-    padding: 32,
-    width: 280,
-    height: 200,
+    backgroundColor: '#06b6d4',
+    borderRadius: 32,
+    padding: 60,
+    width: 500,
+    height: 350,
     justifyContent: 'space-between',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 16,
-    elevation: 10,
+    shadowColor: '#0891b2',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 12,
   },
   relaxationCard: {
-    backgroundColor: '#4ECDC4',
-    opacity: 0.6,
+    backgroundColor: '#0891b2',
+    opacity: 0.9,
   },
   cardContent: {
     flex: 1,
   },
   cardTitle: {
-    fontSize: 32,
+    fontSize: 48,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 8,
-    letterSpacing: 1,
+    marginBottom: 12,
+    letterSpacing: 2,
   },
   cardSubtitle: {
-    fontSize: 18,
+    fontSize: 24,
     color: 'rgba(255, 255, 255, 0.8)',
   },
   cardIcon: {
     alignSelf: 'flex-end',
   },
   iconText: {
-    fontSize: 64,
+    fontSize: 96,
+  },
+  attentionCircleContainer: {
+    marginTop: 20,
+    alignItems: 'center',
   },
 });
 
